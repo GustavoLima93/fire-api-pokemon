@@ -12,11 +12,10 @@ class StartUp {
 
     constructor() {
         firebase.initializeApp(environment.firebase);
-        this.startApi();
-        this.app = express();
-        setTimeout(() => {
+       // this.startApi();
+        this.app = express();      
         this.routes();
-        }, 3000);
+       
         
     }
 
@@ -24,17 +23,14 @@ class StartUp {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
     }
-
-    startApi() {
-        return PokemonController.startApi();
-    }
-
+  
     routes() {
+        
         this.app.route('/').get((req, res) => {
             res.send({ versao: 'GHLIMA-API-POkEMON-V2' })
         });
 
-        this.app.route('/api/v2/pokemons').get(PokemonController.get);
+        this.app.route('/api/v2/pokemons').get(PokemonController.getAll);
     }
 }
 

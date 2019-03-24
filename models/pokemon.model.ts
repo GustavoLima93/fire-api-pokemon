@@ -1,4 +1,4 @@
-export interface Pokemons {
+export interface Pokemon {
     
     numeroDex: number;
     nome: string;
