@@ -1,28 +1,36 @@
-import * as firebase from 'firebase';
+import * as firebase from "firebase";
 
-import PokemonsController from '../controllers/pokemonsController';
-
-import { Pokemon } from './../models/pokemon.model';
+import { Pokemon } from "./../models/pokemon.model";
 
 class PokemonsService {
 
-    private pokemons: Pokemon[]
+  private pokemons: Pokemon[];
 
-    getAll(req, res) {
+  getAll() {
+    return new Promise((resolve, reject) => {
+      if (this.pokemons) {
+        console.log('RETORNANDO DO CASH')
+        return resolve(this.pokemons);
+      }
+      firebase
+        .database()
+        .ref("pokemons/")
+        .on(
+          "value",
+          snapshot => {
 
-        if (this.pokemons) {
-            console.log('entrou nesse cash');
-            return PokemonsController.returnAll(req, res, this.pokemons);
-        }
+            console.log('NÃO ENTROU NO CASH')
+            this.pokemons = snapshot.val()
+            resolve(snapshot.val());
 
-        firebase.database().ref('pokemons/').on("value", (snapshot) => {
-            this.pokemons = snapshot.val();       
-            return PokemonsController.returnAll(req, res, snapshot.val());
-        }, function (errorObject) {
+          },
+          function(errorObject) {
             console.log("The read failed: " + errorObject.code);
-        });
-    }
-
+            reject(errorObject.code);
+          }
+        );
+    });
+  }
 }
 
-export default new PokemonsService()
+export default new PokemonsService();
