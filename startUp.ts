@@ -1,16 +1,14 @@
 import * as express from "express";
-import * as firebase from "firebase";
 import * as bodyParser from "body-parser";
 
+import Firebasedb from "./infra/firebasedb";
 import PokemonController from "./controllers/pokemonsController";
-
-import { environment } from "./environments/environment";
 
 class StartUp {
   public app: express.Application;
 
   constructor() {
-    firebase.initializeApp(environment.firebase);
+    Firebasedb.connectionDb
     this.app = express();
     this.routes();
   }
@@ -28,7 +26,7 @@ class StartUp {
     this.app.route("/api/v2/pokemons").get(PokemonController.getAll);
     this.app.route("/api/v2/pokemon/:id").get(PokemonController.getById);
     this.app.route("/api/v2/pokemon/name/:id").get(PokemonController.getByName);
-    this.app.route("/api/v2/pokemons/:id").get(PokemonController.getByGeneration);
+    this.app.route("/api/v2/pokemons/generation/:id").get(PokemonController.getByGeneration);
   }
 }
 
