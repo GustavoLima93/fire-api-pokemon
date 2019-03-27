@@ -26,6 +26,9 @@ class StartUp {
     });
 
     this.app.route("/api/v2/pokemons").get(PokemonController.getAll);
+    this.app.route("/api/v2/pokemon/:id").get(PokemonController.getById);
+    this.app.route("/api/v2/pokemon/name/:id").get(PokemonController.getByName);
+    this.app.route("/api/v2/pokemons/:id").get(PokemonController.getByGeneration);
   }
 }
 
